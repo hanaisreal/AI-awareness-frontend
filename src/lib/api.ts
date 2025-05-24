@@ -36,25 +36,36 @@ export async function initiateFaceswapVideo(photoFile: File): Promise<InitiateFa
     const formData = new FormData();
     formData.append('user_image', photoFile, photoFile.name);
 
-    const response = await fetch(`${API_BASE_URL}/api/initiate-faceswap`, {
-        method: 'POST',
-        body: formData,
-    });
+    console.log('Initiating faceswap with API URL:', API_BASE_URL);
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/initiate-faceswap`, {
+            method: 'POST',
+            body: formData,
+        });
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ detail: 'Failed to parse error from faceswap initiation' }));
-        console.error("Initiate faceswap video error:", errorData);
-        throw new Error(errorData.detail || 'Failed to initiate faceswap video');
+        console.log('Faceswap response status:', response.status);
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ detail: 'Failed to parse error from faceswap initiation' }));
+            console.error("Initiate faceswap video error:", errorData);
+            throw new Error(errorData.detail || 'Failed to initiate faceswap video');
+        }
+
+        const responseData = await response.json();
+        console.log('Faceswap response data:', responseData);
+        
+        return {
+            akool_task_id: responseData.akool_task_id,
+            akool_job_id: responseData.akool_job_id,
+            message: responseData.message,
+            details: responseData.details,
+            direct_url: responseData.direct_url
+        };
+    } catch (error) {
+        console.error('Faceswap error details:', error);
+        throw error;
     }
-
-    const responseData = await response.json();
-    return {
-      akool_task_id: responseData.akool_task_id,
-      akool_job_id: responseData.akool_job_id,
-      message: responseData.message,
-      details: responseData.details,
-      direct_url: responseData.direct_url
-    };
 }
 
 export interface FaceswapStatus {
