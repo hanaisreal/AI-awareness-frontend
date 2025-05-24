@@ -1,11 +1,11 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import UserDataInput from '@/components/UserDataInput'
-import EducationalVideo from '@/components/EducationalVideo'
-import DeepfakeExperiencePlayer from '@/components/DeepfakeExperiencePlayer'
-import ReflectionForm from '@/components/ReflectionForm'
-import { uploadVoice, initiateFaceswapVideo, getFaceswapVideoStatus, getElevenLabsIntroAudio } from '@/lib/api'
-import ListenToClonedVoice from '@/components/ListenToClonedVoice'
+import UserDataInput from '../components/UserDataInput'
+import EducationalVideo from '../components/EducationalVideo'
+import DeepfakeExperiencePlayer from '../components/DeepfakeExperiencePlayer'
+import ReflectionForm from '../components/ReflectionForm'
+import { uploadVoice, initiateFaceswapVideo, getFaceswapVideoStatus, getElevenLabsIntroAudio } from '../lib/api'
+import ListenToClonedVoice from '../components/ListenToClonedVoice'
 
 const POLLING_INTERVAL = 5000; // 5 seconds
 const MAX_POLLS = 60; // 5 minutes max polling

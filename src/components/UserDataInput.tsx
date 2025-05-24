@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
-import { useVoiceRecorder } from '@/hooks/useVoiceRecorder'
+import { useVoiceRecorder } from '../hooks/useVoiceRecorder'
 
 interface UserDataInputProps {
   onImageUpload?: (imageFile: File) => void

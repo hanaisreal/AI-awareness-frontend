@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef } from 'react'
-import { uploadVoice } from '@/lib/api'
+import { uploadVoice } from '../../lib/api'
 
 interface VoiceRecorderProps {
   onVoiceCloned: (voiceId: string) => void
