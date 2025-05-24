@@ -1,8 +1,11 @@
+// API base URL from environment variable
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export async function uploadVoice(audioBlob: Blob, fileName: string = "user_voice.webm"): Promise<string> {
     const formData = new FormData();
     formData.append('audio_file', audioBlob, fileName);
     
-    const response = await fetch('http://localhost:8000/api/clone-voice', {
+    const response = await fetch(`${API_BASE_URL}/api/clone-voice`, {
       method: 'POST',
       body: formData,
     });
@@ -19,7 +22,7 @@ export async function uploadVoice(audioBlob: Blob, fileName: string = "user_voic
         throw new Error('Voice ID not found in clone response');
     }
     return data.voice_id;
-  }
+}
 
 export interface InitiateFaceswapResponse {
   akool_task_id: string | null;
@@ -33,7 +36,7 @@ export async function initiateFaceswapVideo(photoFile: File): Promise<InitiateFa
     const formData = new FormData();
     formData.append('user_image', photoFile, photoFile.name);
 
-    const response = await fetch('http://localhost:8000/api/initiate-faceswap', {
+    const response = await fetch(`${API_BASE_URL}/api/initiate-faceswap`, {
         method: 'POST',
         body: formData,
     });
@@ -65,7 +68,7 @@ export interface FaceswapStatus {
 }
 
 export async function getFaceswapVideoStatus(taskId: string): Promise<FaceswapStatus> {
-    const response = await fetch(`http://localhost:8000/api/faceswap-status/${taskId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/faceswap-status/${taskId}`, {
         method: 'GET',
     });
 
@@ -78,7 +81,7 @@ export async function getFaceswapVideoStatus(taskId: string): Promise<FaceswapSt
 }
 
 export async function getElevenLabsIntroAudio(text: string, voiceId: string): Promise<{ audioUrl: string }> {
-    const response = await fetch('http://localhost:8000/api/generate-narrator-speech', {
+    const response = await fetch(`${API_BASE_URL}/api/generate-narrator-speech`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
