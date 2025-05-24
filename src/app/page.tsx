@@ -14,7 +14,6 @@ const USER_VOICE_SCRIPT = "여보세요? 이번에 건강검진 예약해놨거�
 const RECORDING_SCRIPT_KOREAN = "안녕하세요. 지금 제 목소리를 녹음하고 있습니다. 이 목소리가 어떻게 복제될지 기대되네요.";
 const MIN_POLLS_FOR_STATUS_2_SUCCESS = 3;
 
-const AKOOL_API_KEY = process.env.NEXT_PUBLIC_AKOOL_API_KEY;
 
 export default function Home() {
   const [currentView, setCurrentView] = useState('welcome');
@@ -23,7 +22,6 @@ export default function Home() {
   const [userClonedVoiceId, setUserClonedVoiceId] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>("참여자");
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(null);
-  // const [narratorIntroAudioUrl, setNarratorIntroAudioUrl] = useState<string | null>(null); // Removed
   const [userScriptAudioUrl, setUserScriptAudioUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false); // General processing for non-Akool async tasks
   const [processingMessage, setProcessingMessage] = useState<string | null>(null);
