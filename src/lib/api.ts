@@ -1,22 +1,26 @@
-// API base URL from environment variable
+// API base URL - use environment variable in production, localhost in development
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+// Helper function for API calls
+async function handleApiResponse(response: Response) {
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.detail || `API error: ${response.status}`);
+    }
+    return response.json();
+}
 
 export async function uploadVoice(audioBlob: Blob, fileName: string = "user_voice.webm"): Promise<string> {
     const formData = new FormData();
     formData.append('audio_file', audioBlob, fileName);
     
     const response = await fetch(`${API_BASE_URL}/api/clone-voice`, {
-      method: 'POST',
-      body: formData,
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
     });
     
-    if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Upload voice error:", errorData);
-        throw new Error(errorData.detail || 'Failed to clone voice');
-    }
-    
-    const data = await response.json();
+    const data = await handleApiResponse(response);
     if (!data.voice_id) {
         console.error("Voice ID missing in response:", data);
         throw new Error('Voice ID not found in clone response');
@@ -25,11 +29,11 @@ export async function uploadVoice(audioBlob: Blob, fileName: string = "user_voic
 }
 
 export interface InitiateFaceswapResponse {
-  akool_task_id: string | null;
-  akool_job_id: string | null;
-  message: string;
-  details: string | null;
-  direct_url?: string;
+    akool_task_id: string | null;
+    akool_job_id: string | null;
+    message: string;
+    details: string | null;
+    direct_url?: string;
 }
 
 export async function initiateFaceswapVideo(photoFile: File): Promise<InitiateFaceswapResponse> {
@@ -42,17 +46,11 @@ export async function initiateFaceswapVideo(photoFile: File): Promise<InitiateFa
         const response = await fetch(`${API_BASE_URL}/api/initiate-faceswap`, {
             method: 'POST',
             body: formData,
+            credentials: 'include',
         });
 
         console.log('Faceswap response status:', response.status);
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ detail: 'Failed to parse error from faceswap initiation' }));
-            console.error("Initiate faceswap video error:", errorData);
-            throw new Error(errorData.detail || 'Failed to initiate faceswap video');
-        }
-
-        const responseData = await response.json();
+        const responseData = await handleApiResponse(response);
         console.log('Faceswap response data:', responseData);
         
         return {
