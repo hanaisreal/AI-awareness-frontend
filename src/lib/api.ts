@@ -79,6 +79,7 @@ export interface FaceswapStatus {
 export async function getFaceswapVideoStatus(taskId: string): Promise<FaceswapStatus> {
     const response = await fetch(`${API_BASE_URL}/api/faceswap-status/${taskId}`, {
         method: 'GET',
+        credentials: 'include',
     });
 
     if (!response.ok) {
@@ -96,6 +97,7 @@ export async function getElevenLabsIntroAudio(text: string, voiceId: string): Pr
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ text: text, voice_id: voiceId }),
+        credentials: 'include',
     });
 
     if (!response.ok) {
